@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classes from './App.css';
-import Person from './Person/Person';
+import Persons from '../Components/Persons/Persons';
+import Cockpit from '../Components/Cokpit/Cokpit';
 
 
 class App extends React.Component {
@@ -12,16 +13,7 @@ class App extends React.Component {
     showPersons:false
 
   }
-  // switchNameHandler = (newName) => {
-  //   //console.log("swithcNameHandler is called !"); 
-  //   this.setState({
-  //     person: [
-  //       { name: newName, age: 24 },
-  //       { name: 'Dhoni', age: 27 }
-  //     ]
-  //   }
-  //   )
-  // }
+ 
   togglePersonHandler = () =>{
     const doesShow = this.state.showPersons;
     this.setState ({ showPersons:!doesShow});
@@ -55,49 +47,24 @@ class App extends React.Component {
     
 
     let persons = null;
-    let btnClass = '';
-
-    if(this.state.showPersons){
-      persons = (
-
-        <div>
-          {
-              this.state.person.map((person,index) =>{
-              return <Person 
-              click={()=>this.deletePersonHandler(index)}
-              name={person.name} 
-              age={person.age}
-              key={person.id}
-              changed={(event)=>this.changeNameHandler(event,person.id)}
-              />
-            })
-          }
     
 
-        </div>
-
-      );
-      
-      btnClass = classes.Red;
-      
-   
+    if(this.state.showPersons){
+      persons = <Persons 
+          persons={this.state.person}
+          clicked={this.deletePersonHandler}
+          changed={this.changeNameHandler}/>;
     }
     //let classess = ['red','bold'].join(' ');
-    const assignedClassess=[];
-    if(this.state.person.length >=2){
-      assignedClassess.push(classes.read);
-    }
-    if(this.state.person.length <= 1){
-
-      assignedClassess.push(classes.bold);
-    }
 
     return ( 
 
       <div className={classes.App}>
-        <h1>Hi, I'm a React App</h1>
-        <p className={assignedClassess.join(' ')}>This is really working</p>
-        <button className={btnClass} onClick={this.togglePersonHandler}>Switch Name</button>
+        <Cockpit 
+        appTitle={this.props.appTitle}
+        showPersons={this.state.showPersons}
+        persons={this.state.person}
+        clicked={this.togglePersonHandler}/>
         {persons}
       </div>
 
