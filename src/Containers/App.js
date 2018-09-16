@@ -2,22 +2,35 @@ import React, { Component } from 'react';
 import classes from './App.css';
 import Persons from '../Components/Persons/Persons';
 import Cockpit from '../Components/Cokpit/Cokpit';
+import WithClass from '../hoc/WithClass';
 
 
 class App extends React.Component {
-  state = {
+constructor(props){
+  super(props);
+  this.state = {
     person: [
       {id:'sdafha', name: "Max", age: 24 },
       {id:'jjkks', name: 'Dhoni', age: 27 }
     ],
-    showPersons:false
+    showPersons:false,
+    toggleClicked:0,
+    authenticated:false
 
   }
+}
+ 
  
   togglePersonHandler = () =>{
     const doesShow = this.state.showPersons;
-    this.setState ({ showPersons:!doesShow});
-  }
+    this.setState((prevState,props)=>{
+      return { 
+          showPersons:!doesShow,
+          toggleClicked: prevState.toggleClicked+1
+        
+        }
+      } );
+    }
 
   changeNameHandler = (event,id) => {
 
@@ -37,10 +50,16 @@ class App extends React.Component {
 
 
   deletePersonHandler = (personIndex) =>{
-    console.log("deletePersonHandler method executed......");
+    
     const person =[...this.state.person];
+    console.log("=======>"+person);
     person.splice(personIndex,1);
     this.setState({person:person});
+  }
+
+  loginHandler = ()=>{
+
+    this.setState({authenticated:true});
   }
   render() {
 
@@ -53,20 +72,22 @@ class App extends React.Component {
       persons = <Persons 
           persons={this.state.person}
           clicked={this.deletePersonHandler}
-          changed={this.changeNameHandler}/>;
+          changed={this.changeNameHandler}
+          isAuthenticated={this.state.authenticated}/>;
     }
     //let classess = ['red','bold'].join(' ');
 
     return ( 
 
-      <div className={classes.App}>
+      <WithClass classes={classes.App}>
         <Cockpit 
         appTitle={this.props.appTitle}
         showPersons={this.state.showPersons}
         persons={this.state.person}
-        clicked={this.togglePersonHandler}/>
+        clicked={this.togglePersonHandler}
+        logIn={this.loginHandler}/>
         {persons}
-      </div>
+      </WithClass>
 
 
     );
