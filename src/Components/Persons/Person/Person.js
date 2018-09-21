@@ -19,7 +19,7 @@ class Person extends Component{
                 {this.props.authenticated ? <p>I'm authenticated</p> : null}
                 <p onClick={this.props.click}>My name is {this.props.name} and my age is {this.props.age}</p>
                 <p>{this.props.children}</p>
-                <input ref={(inp)=> {this.inputElement=inp}} type="text" onChange={this.props.changed} />
+                <input ref={(inp)=> {this.inputElement=inp}} type="text"  onChange={this.props.changed} />
             </WithClass>
         )
     }
